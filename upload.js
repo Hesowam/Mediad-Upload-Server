@@ -1,15 +1,14 @@
 const IncomingForm = require("formidable").IncomingForm;
+fs = require('fs')
+const fileUpload = require('express-fileupload');
 
 module.exports = function upload(req, res) {
-  var form = new IncomingForm();
+  if (req.files){
+    const file = req.files.file;
+    const fileName = file.name;
 
-  form.on("file", (field, file) => {
-    // Do something with the file
-    // e.g. save it to the database
-    // you can access it using file.path
-  });
-  form.on("end", () => {
-    res.json();
-  });
-  form.parse(req);
+    file.mv('./data/'+fileName, function (err){
+      res.send({message: "error"}).status(500);
+    })
+  }
 };
